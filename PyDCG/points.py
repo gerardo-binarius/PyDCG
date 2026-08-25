@@ -47,7 +47,7 @@ def horton_set(n):
 
     For more details see our paper: Drawing the Horton Set in an Integer Grid of Minimum Size """
 
-    k = int(math.ceil(math.log(n, 2)))
+    k = (n-1).bit_length()
 
     H = _horton_exp(k)
     return H[:n]
@@ -63,11 +63,11 @@ def _horton_exp(k):
         g_k = 0
 
     else:
-        f_k = 2**((k*(k-1)/2)-1)
+        f_k = 2**((k*(k-1)//2)-1)
         if k <= 2:
             f_k_1 = 0
         else:
-            f_k_1 = 2**(((k-1)*(k-2)/2)-1)
+            f_k_1 = 2**(((k-1)*(k-2)//2)-1)
         g_k = f_k-f_k_1
 
     H_k_1 = _horton_exp(k-1)
@@ -533,11 +533,11 @@ def _horton_tree(k, tree):
         f_k = 0
 
     else:
-        f_k = 2**((k*(k-1)/2)-1)
+        f_k = 2**((k*(k-1)//2)-1)
         if k <= 2:
             f_k_1 = 0
         else:
-            f_k_1 = 2**(((k-1)*(k-2)/2)-1)
+            f_k_1 = 2**(((k-1)*(k-2)//2)-1)
         g_k = f_k-f_k_1
         g_k = g_k**2
 
@@ -609,7 +609,7 @@ def _get_CX(pts):
     max_y = max(pts, key=lambda x: x[1])
     min_y = min(pts, key=lambda x: x[1])
     h = abs(max_y[1]-min_y[1])
-    return (10*len(pts)*h+1)/2
+    return (10*len(pts)*h+1)//2
 
 
 def _get_CY(pts):
@@ -621,10 +621,10 @@ def _get_CY(pts):
     k = 0
     n = len(pts)
     while n > 1:
-        n = n/2
+        n = n//2
         k = k+1
     n = len(pts)
-    return ((20*n*((n+1)**(k+1)))*h+1)/2
+    return ((20*n*((n+1)**(k+1)))*h+1)//2
 
 
 def _squared_Horton_set_from_trees(k, T1, T2):
@@ -645,7 +645,7 @@ def random_squared_Horton_set(n):
     k = 1
     m = n
     while m > 1:
-        m = m/2
+        m = m//2
         k = k+1
 
     T1 = random_tree(k)
